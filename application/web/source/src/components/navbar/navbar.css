@@ -1,0 +1,13 @@
+.navbar {
+	background-color: var(--red);
+}
+
+.brand-name {
+	font-family: "Roboto";
+	font-weight: 700;
+}
+
+.links {
+	font-family: "Roboto";
+	font-weight: 700;
+}

@@ -1,0 +1,71 @@
+/*Copyright 2017 Craig A. Stockton
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.*/
+package org.softwareonpurpose.gauntlet;
+
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+public class Environment {
+    private static Environment environment;
+    private final Properties properties = new Properties();
+
+    Environment(InputStream inputStream) {
+        if (inputStream != null) {
+            try {
+                properties.load(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * System Property 'env' is used to initialize Environment to resources/[env].properties
+     *
+     * @return Environment
+     */
+    public static Environment getInstance() {
+        if (environment == null) {
+            String env = System.getProperty("env");
+            env = (env == null) || env.isBlank() ? "local" : env;
+            InputStream inputStream = null;
+            String environmentPropertiesFile = String.format("%s.properties", env);
+            try {
+                inputStream = Environment.class.getClassLoader().getResourceAsStream(environmentPropertiesFile);
+            } catch (Exception e) {
+                String messageFormat = "System Property 'env' set to NON-existent file %s";
+                String message = String.format(messageFormat, environmentPropertiesFile);
+                LoggerFactory.getLogger(Environment.class).error(message);
+            }
+            environment = new Environment(inputStream);
+        }
+        return environment;
+    }
+
+    @SuppressWarnings("unused")
+    static void clear() {
+        environment = null;
+    }
+
+    private String getProperty(@SuppressWarnings("SameParameterValue") String key) {
+        return properties.getProperty(key);
+    }
+
+    public String getPath() {
+        return getProperty("path");
+    }
+}

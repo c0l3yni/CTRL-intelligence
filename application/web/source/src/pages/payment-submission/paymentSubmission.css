@@ -1,0 +1,13 @@
+.field-error {
+  color: var(--red);
+}
+
+#payment-submission {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#result-message {
+  color: var(--green);
+}

@@ -1,0 +1,19 @@
+Full-Requirements-Report.rpt
+
+# MacOS litter
+**/.DS_Store
+
+# Intellij idea / IDE config files
+**/.idea
+
+# Gradle local files : wrapper tools should autodownload
+**/.gradle
+**/*.iml
+
+# Windows Executable Files #
+*.exe
+
+# Coverage Report Files #
+*.rpt
+
+
